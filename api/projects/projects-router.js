@@ -5,7 +5,8 @@ const Project = require('./projects-model')
 
 const {
     checkBody,
-    idExists
+    idExists,
+    checkComplete
 } = require('./projects-middleware')
 
 router.get('/', idExists, async (req, res, next) => {
@@ -34,5 +35,14 @@ router.post('/', checkBody, async (req, res, next) => {
     }
 })
 
+router.put('/:id', idExists, checkBody, checkComplete, async (req, res, next) => {
+    let changes = { ...req.body, completed: req.body.completed };
+    const updateProject = await Project.update(req.id, changes)
+    try {
+        res.json(updateProject)
+    } catch (err) {
+        next(err)
+    }
+})
 
 module.exports = router;
