@@ -7,7 +7,8 @@ const Action = require('./actions-model')
 
 const {
     checkBody,
-    idExists
+    idExists,
+    checkComplete
 } = require('./actions-middlware')
 
 router.get('/', async (req, res, next) => {
@@ -34,5 +35,15 @@ router.post('/', checkBody, async (req, res, next) => {
         next(err)
     }
 })
+
+router.put('/:id', idExists, checkBody, checkComplete, async (req, res, next) => {
+    let changes = { ...req.body, completed: req.body.completed }
+    const updateAction = await Action.update(req.params.id, changes)
+    try {
+        res.json(updateAction)
+    } catch (err) {
+        next(err)
+    }
+});
 
 module.exports = router;
