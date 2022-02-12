@@ -3,9 +3,23 @@ const express = require('express');
 const router = express.Router()
 const Project = require('./projects-model')
 
-router.get('/', async (req, res, next) => {
+const {
+    checkBody,
+    idExists
+} = require('./projects-middleware')
+
+router.get('/', idExists, async (req, res, next) => {
     try {
         res.json(await Project.get())
+    } catch (err) {
+        next(err)
+    }
+})
+
+router.get('/:id', async (req, res, next) => {
+    const { id } = req.params
+    try {
+        res.json(await Project.get(id))
     } catch (err) {
         next(err)
     }

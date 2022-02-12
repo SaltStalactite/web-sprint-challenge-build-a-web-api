@@ -18,7 +18,7 @@ server.get('*', (req, res, next) => {
 })
 
 server.use((err, req, res, next) => { // eslint-disable-line
-    res.status(500).json({
+    res.status(404).json({
         message: err.message,
         stack: err.stack,
     });
