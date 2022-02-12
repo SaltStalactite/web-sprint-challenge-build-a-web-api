@@ -26,4 +26,13 @@ router.get('/:id', idExists, async (req, res, next) => {
     }
 })
 
+router.post('/', checkBody, async (req, res, next) => {
+    const newAction = await Action.insert(req.body)
+    try {
+        res.json(newAction)
+    } catch (err) {
+        next(err)
+    }
+})
+
 module.exports = router;
