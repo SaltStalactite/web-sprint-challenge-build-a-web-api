@@ -36,7 +36,7 @@ router.post('/', checkBody, async (req, res, next) => {
 })
 
 router.put('/:id', idExists, checkBody, checkComplete, async (req, res, next) => {
-    let changes = { ...req.body, completed: req.body.completed };
+    let changes = { ...req.body, completed: req.completed };
     const updateProject = await Project.update(req.id, changes)
     try {
         res.json(updateProject)
@@ -45,4 +45,11 @@ router.put('/:id', idExists, checkBody, checkComplete, async (req, res, next) =>
     }
 })
 
+router.delete('/:id', idExists, async (req, res, next) => {
+    try {
+        res.json(await Project.remove(req.params.id))
+    } catch (err) {
+        next(err)
+    }
+})
 module.exports = router;
