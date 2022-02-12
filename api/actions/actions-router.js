@@ -44,6 +44,14 @@ router.put('/:id', idExists, checkBody, checkComplete, async (req, res, next) =>
     } catch (err) {
         next(err)
     }
+})
+
+router.delete('/:id', idExists, async (req, res, next) => {
+    try {
+        res.json(await Action.remove(req.params.id))
+    } catch (err) {
+        next(err)
+    }
 });
 
 module.exports = router;
